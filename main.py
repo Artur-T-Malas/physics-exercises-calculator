@@ -40,6 +40,7 @@ class MainWindowLayout(QWidget):
 
         # Drop-down list
         self.chosen_variable_combobox = QComboBox(self)
+        self.chosen_variable_combobox.currentTextChanged.connect(self.choose_variable)
         list_of_variables = ["m1", "c1", "delta T1", "m2", "c2", "delta T2"]
         for variable in list_of_variables:
             self.chosen_variable_combobox.addItem(variable)
@@ -90,6 +91,21 @@ class MainWindowLayout(QWidget):
         main_layout.addLayout(layout)
 
         self.setLayout(main_layout)
+
+    def choose_variable(self):
+        chosen_variable = self.chosen_variable_combobox.currentText()
+
+        if chosen_variable == "m1":
+            self.m1_input.setEnabled(False)
+            self.c1_input.setEnabled(True)
+            if self.m2_input.text() != "" and self.c2_input.text() != "" and self.delta_T2_input.text() != "" and self.c1_input.text() != "" and self.delta_T1_input.text() != "":
+                m1_value = str((float(self.m2_input.text()) * float(self.c2_input.text()) * float(self.delta_T2_input.text())) / (float(self.c1_input.text()) * float(self.delta_T1_input.text())))
+                self.m1_input.setText(m1_value)
+        elif chosen_variable == "c1":
+            self.c1_input.setEnabled(False)
+            self.m1_input.setEnabled(True)
+
+            
 
 
 def input_field_with_label(label, parent):
